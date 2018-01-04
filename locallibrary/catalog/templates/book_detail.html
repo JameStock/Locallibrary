@@ -1,0 +1,44 @@
+{% extends 'base_generic.html' %}
+{% load static %}
+{% block title %}{{ book.title }}{% endblock %}
+
+
+{% block link %}{% endblock %}
+
+{% block content %}>
+  <div class="container">
+      <div class="bg-faded p-4 my-4">
+        <hr class="divider">
+        <h2 class="text-center text-lg text-uppercase my-0">  
+          <strong>{{ book.title }}</strong>
+        </h2>
+        <hr class="divider">
+        <div class="row">
+          <div class="col-lg-6">
+            <img class="img-fluid mb-4 mb-lg-0" src="{{book.image}}" alt="">
+          </div>
+          <div class="col-lg-6">
+            <p><strong>Author:</strong> <a href="">{{ book.author }}</a></p>
+            <p><strong>Genre:</strong> {% for genre in book.genre.all %} {{ genre }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+            <p><strong>ISBN:</strong> {{ book.isbn }}</p>
+            <strong>Summary:</strong><br>
+            {{ book.summary }}
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam soluta dolore voluptatem, deleniti dignissimos excepturi veritatis cum hic sunt perferendis ipsum perspiciatis nam officiis sequi atque enim ut! Velit, consectetur.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laboriosam pariatur perspiciatis reprehenderit illo et vitae iste provident debitis quos corporis saepe deserunt ad, officia, minima natus molestias assumenda nisi velit?</p>
+
+              <div style="margin-left:20px;margin-top:20px">
+              <h4>Copies</h4>
+
+              {% for copy in book.bookinstance_set.all %}
+              <hr>
+              <p class="{% if copy.status == 'a' %}text-success{% elif copy.status == 'm' %}text-danger{% else %}text-warning{% endif %}">{{ copy.get_status_display }}</p>
+              {% if copy.status != 'a' %}<p><strong>Due to be returned:</strong> {{copy.due_back}}</p>{% endif %}
+              <p><strong>Imprint:</strong> {{copy.imprint}}</p>
+              <p class="text-muted"><strong>Id:</strong> {{copy.id}}</p>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+{% endblock %}
